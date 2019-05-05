@@ -1,7 +1,6 @@
 const passport = require('passport');
 const Users = require('../models/Users.js');
 
-
 //POST new user route (optional, everyone has access)
 exports.create = (req, res, next) => {
 
@@ -27,6 +26,10 @@ exports.create = (req, res, next) => {
     username : user.name,
     email: user.email,
     password: user.password
+  }
+
+  if(user.role) {
+    newUser.role = user.role;
   }
 
   const finalUser = new Users(newUser);
@@ -83,7 +86,6 @@ exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
-
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
   Users.find().select("-hash").select('-salt').sort({createdAt: 'desc'})
@@ -117,8 +119,6 @@ exports.findOne = (req, res) => {
         });
     });
 };
-
-
 
 //DELETE current route (required, only authenticated users have access)
 exports.delete = (req, res) => {

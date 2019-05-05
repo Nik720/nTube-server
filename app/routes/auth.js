@@ -17,13 +17,13 @@ const checkForAdminAuthorization = (req,res,next) => {
   if(authorization && authorization.split(' ')[0] === 'Token') {
     let token = authorization.split(' ')[1];
     var decoded = jwtWeb.verify(token, constant.SECRET);
-    if(decoded.role == 'admin') {
+    if(decoded.role.toLowerCase() == 'admin') {
       return next();
     } else {
       return res.status(401).send({
           message: "Not Authorised to Access this Route"
       });
-    }  
+    }
   }
 }
 
