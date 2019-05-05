@@ -86,7 +86,7 @@ exports.login = (req, res, next) => {
 
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
-  Users.find()
+  Users.find().select("-hash").select('-salt').sort({createdAt: 'desc'})
     .then(users => {
         res.send(users);
     }).catch(err => {
@@ -114,6 +114,30 @@ exports.findOne = (req, res) => {
         }
         return res.status(500).send({
             message: "Error retrieving user with id " + req.params.userId
+        });
+    });
+};
+
+
+
+//DELETE current route (required, only authenticated users have access)
+exports.delete = (req, res) => {
+  Users.findByIdAndRemove(req.params.userId)
+    .then(user => {
+        if(!user) {
+            return res.status(404).send({
+                message: "user not found with id " + req.params.userId
+            });
+        }
+        res.send({message: "User deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "user not found with id " + req.params.userId
+            });
+        }
+        return res.status(500).send({
+            message: "Could not delete user with id " + req.params.userId
         });
     });
 };
