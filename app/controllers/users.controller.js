@@ -5,7 +5,7 @@ const Users = require('../models/Users.js');
 //POST new user route (optional, everyone has access)
 exports.create = (req, res, next) => {
 
-  const user = req.body;
+  const user = req.body.user;
 
   if(!user.email) {
     return res.status(422).send({
@@ -23,7 +23,13 @@ exports.create = (req, res, next) => {
     });
   }
 
-  const finalUser = new Users(user);
+  let newUser = {
+    username : user.name,
+    email: user.email,
+    password: user.password
+  }
+
+  const finalUser = new Users(newUser);
 
   finalUser.setPassword(user.password);
 
@@ -97,14 +103,14 @@ exports.findOne = (req, res) => {
         if(!user) {
             return res.status(404).send({
                 message: "User not found with id " + req.params.userId
-            });            
+            });
         }
         res.send(user);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "Usert not found with id " + req.params.userId
-            });                
+            });
         }
         return res.status(500).send({
             message: "Error retrieving user with id " + req.params.userId

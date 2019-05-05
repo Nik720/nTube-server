@@ -5,24 +5,24 @@ const constant = require('../../config/constant');
 
 var UsersSchema = mongoose.Schema({
   username: {
-    type: String, 
-    required: [true, "can't be blank"], 
-    match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
+    type: String,
+    required: [true, "can't be blank"],
+    match: [/^[a-zA-Z0-9 ]+$/, 'is invalid'],
     index: true
   },
   email: {
-    type: String, 
-    lowercase: true, 
-    unique: true, 
-    required: [true, "can't be blank"], 
-    match: [/\S+@\S+\.\S+/, 'is invalid'], 
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: [true, "can't be blank"],
+    match: [/\S+@\S+\.\S+/, 'is invalid'],
     index: true
   },
   hash: String,
   salt: String,
   role: {
-    type: String, 
-    default: 'public' 
+    type: String,
+    default: 'public'
   }
 }, {timestamps: true});
 
