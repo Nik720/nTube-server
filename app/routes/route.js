@@ -13,6 +13,7 @@ router.post('/user/register', auth.optional, users.create);
 router.get('/users',[auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId',[auth.required, auth.isAdminAuthorised], users.findOne);
 router.delete('/user/delete/:userId',[auth.required, auth.isAdminAuthorised], users.delete);
+router.put('/user/:userId',[auth.required, auth.isAdminAuthorised], users.update);
 
 
 // Create a new Role

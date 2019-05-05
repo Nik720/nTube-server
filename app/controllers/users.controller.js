@@ -120,6 +120,59 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.update = (req, res) => {
+
+    const user = req.body.user;
+	  // Validate Request
+    if(!user.email) {
+      return res.status(422).send({
+        errors: {
+          email: 'is required',
+        },
+      });
+    }
+
+    if(!user.role) {
+      return res.status(422).send({
+        errors: {
+          role: 'is required',
+        },
+      });
+    }
+
+    let newUser = {
+      username : user.name,
+      email: user.email,
+      role: user.role
+    }
+
+    if(user.password) {
+      Users.setPassword(user.password);
+    }
+
+    console.log(req.params.userId);
+
+    // Find role and update it with the request body
+    Users.findByIdAndUpdate(req.params.userId, { newUser }, {new: true})
+    .then(user => {
+        if(!user) {
+            return res.status(404).send({
+                message: "User not found with id " + req.params.userId
+            });
+        }
+        res.send(user);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "User not found with id " + req.params.userId
+            });
+        }
+        return res.status(500).send({
+            message: "Error updating user with id " + req.params.userId
+        });
+    });
+};
+
 //DELETE current route (required, only authenticated users have access)
 exports.delete = (req, res) => {
   Users.findByIdAndRemove(req.params.userId)
