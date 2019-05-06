@@ -2,8 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
-const constant = require('./config/constant');
 const errorHandler = require('errorhandler');
+const path = require("path");
+const expressValidator = require('express-validator');
+const constant = require('./config/constant');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -35,6 +37,8 @@ app.use(session({
   saveUninitialized: false
 }));
 
+app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(expressValidator());
 
 // Connecting to the database
 mongoose.connect(dbConfig.url, {

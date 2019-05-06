@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('./auth');
+let upload = require('../../config/multer.config');
+let validator = require('../../middleware/validator');
 
 const users = require('../controllers/users.controller.js');
 const roles = require('../controllers/role.controller.js');
+const videos = require('../controllers/video.controller.js');
 
 // Auth routes
 router.post('/login', auth.optional, users.login);
@@ -28,6 +31,8 @@ router.put('/roles/:roleId',[auth.required, auth.isAdminAuthorised], roles.updat
 router.delete('/roles/:roleId',[auth.required, auth.isAdminAuthorised], roles.delete);
 
 
-
+// videos routes
+router.post('/video/upload', upload.single('file'),validator.validateVideo, auth.required, videos.create);
+router.get('/videoPlayback/:videoId', auth.optional, videos.findOne);
 
 module.exports = router;
