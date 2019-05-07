@@ -18,7 +18,6 @@ router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findO
 router.delete('/user/delete/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
 router.put('/user/:userId', [auth.required, auth.isAdminAuthorised], users.update);
 
-
 // Create a new Role
 router.post('/roles', [auth.required, auth.isAdminAuthorised], roles.create);
 router.get('/roles', [auth.required, auth.isAdminAuthorised], roles.findAll);
@@ -26,10 +25,10 @@ router.get('/roles/:roleId', [auth.required, auth.isAdminAuthorised], roles.find
 router.put('/roles/:roleId', [auth.required, auth.isAdminAuthorised], roles.update);
 router.delete('/roles/:roleId', [auth.required, auth.isAdminAuthorised], roles.delete);
 
-
 // videos routes
 router.post('/video/upload', upload.single('file'), validator.validateVideo, auth.required, videos.create);
 router.get('/videoPlayback/:videoId', auth.optional, videos.findOne);
 router.get('/videos', auth.required, videos.findAll);
+router.delete('/videos/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
 
 module.exports = router;

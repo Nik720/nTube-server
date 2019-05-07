@@ -150,8 +150,6 @@ exports.update = (req, res) => {
       Users.setPassword(user.password);
     }
 
-    console.log(req.params.userId);
-
     // Find role and update it with the request body
     Users.findByIdAndUpdate(req.params.userId, { newUser }, {new: true})
     .then(user => {

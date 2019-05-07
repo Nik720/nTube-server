@@ -4,31 +4,31 @@ const Video = require('../models/videos.model.js');
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegPath);
+const path = require('path');
 
 // Create and Save a new Video
 exports.create = (req, res) => {
 
-    let videoThumbname = req.file.filename
-    var proc = ffmpeg(`${req.file.path}`)
-        // setup event handlers
-        .on('filenames', function(filenames) {
-            console.log('screenshots are ' + filenames.join(', '));
-        })
-        .on('end', function() {
-            console.log('screenshots were saved');
-        })
-        .on('error', function(err) {
-            console.log('an error happened: ' + err.message);
-        })
-        .screenshots({
-            count: 1,
-            filename: `${req.file.filename}-thumbnail.png`,
-            timestamps: [ '00:00:02.000' ],
-            folder: 'uploads/thumbnail',
-            size: '250x150'
-        });
+    // create thumbnail from video
+    ffmpeg(`${req.file.path}`)
+    .on('filenames', function(filenames) {
+        console.log('screenshots are ' + filenames.join(', '));
+    })
+    .on('end', function() {
+        console.log('screenshots were saved');
+    })
+    .on('error', function(err) {
+        console.log('an error happened: ' + err.message);
+    })
+    .screenshots({
+        count: 1,
+        filename: `${req.file.filename}-thumbnail.png`,
+        timestamps: [ '00:00:02.000' ],
+        folder: 'uploads/thumbnail',
+        size: '250x150'
+    });
 
-    // Create a Video
+    // Create a Video object
     const videoData = new Video({
         title: req.body.title,
         description: req.body.description,
@@ -49,7 +49,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all roles from the database.
 exports.findAll = (req, res) => {
-	Video.find()
+	Video.find().sort({createdAt: 'desc'})
     .then(data => {
         res.send(data);
     }).catch(err => {
@@ -109,6 +109,28 @@ exports.findOne = (req, res) => {
         }
         return res.status(500).send({
             message: "Error retrieving Video with id " + req.params.videoId
+        });
+    });
+};
+
+// Delete a video with the specified videoId in the request
+exports.delete = (req, res) => {
+	Video.findByIdAndRemove(req.params.roleId)
+    .then(data => {
+        if(!role) {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        res.send({message: "Video deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        return res.status(500).send({
+            message: "Could not delete video with id " + req.params.videoId
         });
     });
 };
