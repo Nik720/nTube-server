@@ -9,7 +9,7 @@ var storage = multer.diskStorage({
  filename: function (req, file, cb) {
      var extension = path.extname(file.originalname);
      var file = path.basename(file.originalname,extension);
-     var id = file +'_'+ Date.now() + extension;
+     var id = Date.now() + extension;
      cb(null,id);
  }
 });

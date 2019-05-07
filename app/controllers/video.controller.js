@@ -1,15 +1,38 @@
 
 const fs = require('fs');
 const Video = require('../models/videos.model.js');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 // Create and Save a new Video
 exports.create = (req, res) => {
+
+    let videoThumbname = req.file.filename
+    var proc = ffmpeg(`${req.file.path}`)
+        // setup event handlers
+        .on('filenames', function(filenames) {
+            console.log('screenshots are ' + filenames.join(', '));
+        })
+        .on('end', function() {
+            console.log('screenshots were saved');
+        })
+        .on('error', function(err) {
+            console.log('an error happened: ' + err.message);
+        })
+        .screenshots({
+            count: 1,
+            filename: `${req.file.filename}-thumbnail.png`,
+            timestamps: [ '00:00:02.000' ],
+            folder: 'uploads/thumbnail',
+            size: '250x150'
+        });
 
     // Create a Video
     const videoData = new Video({
         title: req.body.title,
         description: req.body.description,
-        thumbnail: req.file.filename,
+        thumbnail: `${req.file.filename}-thumbnail.png`,
         video: req.file.filename
     });
 
@@ -24,6 +47,17 @@ exports.create = (req, res) => {
     });
 };
 
+// Retrieve and return all roles from the database.
+exports.findAll = (req, res) => {
+	Video.find()
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving roles."
+        });
+    });
+};
 
 // Find a single video with a videoId
 exports.findOne = (req, res) => {
