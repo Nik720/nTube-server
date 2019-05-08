@@ -36,8 +36,6 @@ exports.create = (req, res) => {
         video: req.file.filename
     });
 
-    console.log(videoData);
-
     // Save Video in the database
     videoData.save()
     .then(data => {
