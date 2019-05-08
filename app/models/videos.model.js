@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const URLSlugs = require('mongoose-url-slugs');
 
 const VideosSchema = mongoose.Schema({
     title: String,
@@ -10,5 +11,8 @@ const VideosSchema = mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// Save slugs to 'myslug' field.
+VideosSchema.plugin(URLSlugs('title', {field: 'slug'}));
 
 module.exports = mongoose.model('Videos', VideosSchema);
