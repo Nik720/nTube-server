@@ -29,6 +29,6 @@ router.delete('/roles/:roleId', [auth.required, auth.isAdminAuthorised], roles.d
 router.post('/video/upload', upload.single('file'), validator.validateVideo, auth.required, videos.create);
 router.get('/videoPlayback/:videoId', auth.optional, videos.findOne);
 router.get('/videos', auth.required, videos.findAll);
-router.delete('/videos/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
+router.delete('/video/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
 
 module.exports = router;

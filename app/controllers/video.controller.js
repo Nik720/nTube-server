@@ -36,6 +36,8 @@ exports.create = (req, res) => {
         video: req.file.filename
     });
 
+    console.log(videoData);
+
     // Save Video in the database
     videoData.save()
     .then(data => {
@@ -115,9 +117,9 @@ exports.findOne = (req, res) => {
 
 // Delete a video with the specified videoId in the request
 exports.delete = (req, res) => {
-	Video.findByIdAndRemove(req.params.roleId)
+	Video.findByIdAndRemove(req.params.videoId)
     .then(data => {
-        if(!role) {
+        if(!data) {
             return res.status(404).send({
                 message: "Video not found with id " + req.params.videoId
             });
