@@ -122,7 +122,15 @@ exports.delete = (req, res) => {
                 message: "Video not found with id " + req.params.videoId
             });
         }
-        res.send({message: "Video deleted successfully!"});
+        fs.unlink(`uploads/${data.video}`, function (err) {
+            if (err) {
+                return res.status(404).send({
+                    message: "Video not found with id " + req.params.videoId
+                });
+            };
+            fs.unlinkSync(`uploads/thumbnail/${data.thumbnail}`);
+            res.send({message: "Video deleted successfully!"});
+        });
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
