@@ -4,9 +4,10 @@ const auth = require('./auth');
 let upload = require('../../config/multer.config');
 let validator = require('../../middleware/validator');
 
-const users = require('../controllers/users.controller.js');
-const roles = require('../controllers/role.controller.js');
-const videos = require('../controllers/video.controller.js');
+const users = require('../controllers/users.controller');
+const roles = require('../controllers/role.controller');
+const videos = require('../controllers/video.controller');
+const reports = require('../controllers/reports.controller');
 
 // Auth routes
 router.post('/login', auth.optional, users.login);
@@ -30,5 +31,8 @@ router.post('/video/upload', upload.single('file'), validator.validateVideo, aut
 router.get('/videoPlayback/:videoId', auth.optional, videos.findOne);
 router.get('/videos', auth.required, videos.findAll);
 router.delete('/video/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
+
+// reportsr
+router.get('/reports', [auth.required, auth.isAdminAuthorised], reports.basicReports);
 
 module.exports = router;

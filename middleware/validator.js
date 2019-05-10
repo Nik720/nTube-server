@@ -1,6 +1,5 @@
 module.exports = {
     validateVideo: function(req, res, next) {
-        console.log(req.file);
         if (req.file == undefined ) {
             res.statusCode = 400;
             return res.json({
