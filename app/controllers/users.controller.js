@@ -86,6 +86,23 @@ exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
+exports.googleSignInCallback = (req, res, next) => {
+	passport.authenticate('google',function(err, user, info) {
+		if(err) {
+			return next(err);
+		}
+		if(!user) {
+			return res.redirect('http://localhost:8080');
+		}
+		UserDB.findOne({email: user._json.email},function(err,usr) {
+			res.writeHead(302, {
+				'Location': 'http://local.ntube.com:8080/'
+			});
+			res.end();
+		});
+	})(req,res,next);
+};
+
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
   Users.find().select("-hash").select('-salt').sort({createdAt: 'desc'})

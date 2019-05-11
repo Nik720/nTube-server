@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 const auth = require('./auth');
 let upload = require('../../config/multer.config');
@@ -18,6 +19,9 @@ router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);
 router.delete('/user/delete/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
 router.put('/user/:userId', [auth.required, auth.isAdminAuthorised], users.update);
+
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google/callback', users.googleSignInCallback);
 
 // Create a new Role
 router.post('/roles', [auth.required, auth.isAdminAuthorised], roles.create);
