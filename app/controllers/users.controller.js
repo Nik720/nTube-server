@@ -1,5 +1,6 @@
 const passport = require('passport');
 const Users = require('../models/Users.js');
+const config = require('../../config/constant');
 
 //POST new user route (optional, everyone has access)
 exports.create = (req, res, next) => {
@@ -90,16 +91,12 @@ exports.googleSignInCallback = (req, res, next) => {
 	passport.authenticate('google',function(err, user, info) {
 		if(err) {
 			return next(err);
-		}
-		if(!user) {
-			return res.redirect('http://localhost:8080');
-		}
-		UserDB.findOne({email: user._json.email},function(err,usr) {
-			res.writeHead(302, {
-				'Location': 'http://local.ntube.com:8080/'
-			});
-			res.end();
-		});
+    }
+    const userDetail = user.toAuthJSON();
+    if(!user) {
+      return res.redirect(`${config.CLIENT_URL}auth/fail`);
+    }
+    return res.redirect(`${config.CLIENT_URL}auth/success?clientToken=`+userDetail.token);
 	})(req,res,next);
 };
 
