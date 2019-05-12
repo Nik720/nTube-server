@@ -11,8 +11,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 
 // Configuring the database
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
+import dbConfig from './config/database.config.js'
+import mongoose from 'mongoose'
 mongoose.Promise = global.Promise;
 
 //Initiate our app
