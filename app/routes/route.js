@@ -14,14 +14,18 @@ const reports = require('../controllers/reports.controller');
 router.post('/login', auth.optional, users.login);
 router.post('/user/register', auth.optional, users.create);
 
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google/callback', users.googleSignInCallback);
+
+router.get('/auth/facebook', passport.authenticate('facebook'));
+router.get('/auth/facebook/callback', users.facebookSignInCallback);
+
 // Users routes
 router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);
 router.delete('/user/delete/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
 router.put('/user/:userId', [auth.required, auth.isAdminAuthorised], users.update);
 
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/auth/google/callback', users.googleSignInCallback);
 
 // Create a new Role
 router.post('/roles', [auth.required, auth.isAdminAuthorised], roles.create);

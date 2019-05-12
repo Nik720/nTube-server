@@ -100,6 +100,19 @@ exports.googleSignInCallback = (req, res, next) => {
 	})(req,res,next);
 };
 
+exports.facebookSignInCallback = (req, res, next) => {
+	passport.authenticate('facebook',function(err, user, info) {
+		if(err) {
+			return next(err);
+    }
+    const userDetail = user.toAuthJSON();
+    if(!user) {
+      return res.redirect(`${config.CLIENT_URL}auth/fail`);
+    }
+    return res.redirect(`${config.CLIENT_URL}auth/success?clientToken=`+userDetail.token);
+	})(req,res,next);
+};
+
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
   Users.find().select("-hash").select('-salt').sort({createdAt: 'desc'})
