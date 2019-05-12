@@ -7,22 +7,6 @@ exports.create = (req, res, next) => {
 
   const user = req.body.user;
 
-  if(!user.email) {
-    return res.status(422).send({
-      errors: {
-        email: 'is required',
-      },
-    });
-  }
-
-  if(!user.password) {
-    return res.status(422).send({
-      errors: {
-        password: 'is required',
-      },
-    });
-  }
-
   let newUser = {
     username : user.name,
     email: user.email,

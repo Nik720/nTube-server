@@ -5,16 +5,10 @@ const constant = require('../../config/constant');
 
 var UsersSchema = mongoose.Schema({
   username: {
-    type: String,
-    required: [true, "can't be blank"],
+    type: String
   },
   email: {
-    type: String,
-    lowercase: true,
-    unique: true,
-    required: [true, "can't be blank"],
-    match: [/\S+@\S+\.\S+/, 'is invalid'],
-    index: true
+    type: String
   },
   hash: String,
   salt: String,
@@ -57,9 +51,9 @@ UsersSchema.methods.toAuthJSON = function() {
   };
 };
 
-UsersSchema.path('email').validate(async (value) => {
+UsersSchema.methods.validateUniqeEmail = async (value) => {
   const emailCount = await mongoose.models.Users.countDocuments({email: value });
-  return !emailCount;
-}, 'Email already exists');
+  return (emailCount > 0) ? true : false;
+};
 
 module.exports = mongoose.model('Users', UsersSchema);

@@ -12,7 +12,7 @@ const reports = require('../controllers/reports.controller');
 
 // Auth routes
 router.post('/login', auth.optional, users.login);
-router.post('/user/register', auth.optional, users.create);
+router.post('/user/register', validator.userRegistrationValidator, auth.optional, users.create);
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/auth/google/callback', users.googleSignInCallback);
