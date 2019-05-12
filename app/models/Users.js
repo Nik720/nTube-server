@@ -7,7 +7,6 @@ var UsersSchema = mongoose.Schema({
   username: {
     type: String,
     required: [true, "can't be blank"],
-    match: [/^[a-zA-Z0-9 ]+$/, 'is invalid']
   },
   email: {
     type: String,

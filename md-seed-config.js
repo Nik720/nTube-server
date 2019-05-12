@@ -1,5 +1,7 @@
 var mongooseLib = require('mongoose');
+const dbConfig = require('./config/database.config');
 var Users = require("./seeders/users.seeder");
+var Roles = require("./seeders/users.seeder");
 
 mongooseLib.Promise = global.Promise || Promise;
 
@@ -9,7 +11,7 @@ module.exports = {
   mongoose: mongooseLib,
 
   // Export the mongodb url
-  mongoURL: process.env.MONGO_URL || 'mongodb://localhost:27017/ntube-test',
+  mongoURL: process.env.MONGO_URL || dbConfig.url,
 
   /*
     Seeders List
@@ -17,6 +19,7 @@ module.exports = {
     order is important
   */
   seedersList: {
+    Roles,
     Users
   }
 };

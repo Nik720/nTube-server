@@ -20,6 +20,9 @@ router.get('/auth/google/callback', users.googleSignInCallback);
 router.get('/auth/facebook', passport.authenticate('facebook'));
 router.get('/auth/facebook/callback', users.facebookSignInCallback);
 
+router.get('/auth/twitter', passport.authenticate('twitter'));
+router.get('/auth/twitter/callback', users.twitterSignInCallback);
+
 // Users routes
 router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);

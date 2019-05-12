@@ -3,6 +3,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
+const TwitterStrategy = require('passport-twitter').Strategy;
 const Users = mongoose.model('Users');
 
 // Passport Local Strategy
@@ -72,4 +73,34 @@ passport.use(new FacebookStrategy({
         }
         done(null, currentUser);
     }
+));
+
+// Passport Twitter Strategy
+passport.use(new TwitterStrategy({
+    consumerKey: 'NCaK7wXfy5H89Yf0FFqnUMC3T',
+    consumerSecret: 'HyKLU2xlPRaAcUyWx6ChYbAWpaqJmWGvKN9W476nwP02OE86qj',
+    callbackURL: '/api/auth/twitter/callback',
+    userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
+    includeEmail: true
+}, async (accessToken, refereshToken, profile, done) => {
+
+    console.log(profile);
+// find current user in UserModel
+const currentUser = await Users.findOne({
+    email: profile._json.email
+});
+
+// create new user if the database doesn't have this user
+if (!currentUser) {
+    const newUser = await new Users({
+        username : profile._json.name,
+        email: profile._json.email
+    }).save();
+    if (newUser) {
+        console.log("User Created...");
+        done(null, newUser);
+    }
+}
+done(null, currentUser);
+}
 ));
