@@ -1,11 +1,11 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const cors = require('cors');
-const errorHandler = require('errorhandler');
-const path = require("path");
-const expressValidator = require('express-validator');
-const constant = require('./config/constant');
+import express  from 'express'
+import bodyParser from 'body-parser'
+import session from 'express-session'
+import cors from 'cors'
+import errorHandler from 'errorhandler'
+import path from "path"
+import expressValidator from 'express-validator'
+import constant from './config/constant'
 
 const isProduction = process.env.NODE_ENV === 'production';
 

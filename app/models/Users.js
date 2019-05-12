@@ -53,7 +53,7 @@ UsersSchema.methods.toAuthJSON = function() {
 
 UsersSchema.methods.validateUniqeEmail = async (value) => {
   const emailCount = await mongoose.models.Users.countDocuments({email: value });
-  return (emailCount > 0) ? true : false;
+  return (emailCount == 0) ? false : true;
 };
 
 module.exports = mongoose.model('Users', UsersSchema);

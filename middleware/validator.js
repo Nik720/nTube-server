@@ -1,6 +1,6 @@
 const Users = require('../app/models/Users');
 module.exports = {
-    userRegistrationValidator: function(req, res, next) {
+    userRegistrationValidator: async (req, res, next) => {
         let user = req.body.user;
         if(!user.name) {
             return res.status(422).send({
@@ -17,8 +17,8 @@ module.exports = {
                 },
             });
         }
-
-        if(Users().validateUniqeEmail(user.email)) {
+        let emailStatus = await Users().validateUniqeEmail(user.email);
+        if(emailStatus) {
             return res.status(422).send({
                 errors: {
                     message: 'Email is aleready exists.',
@@ -41,7 +41,6 @@ module.exports = {
                 },
             });
         }
-
         return next();
     },
     validateVideo: function(req, res, next) {
