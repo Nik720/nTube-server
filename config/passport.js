@@ -5,6 +5,7 @@ const GoogleStrategy = require('passport-google-oauth20');
 const FacebookStrategy = require('passport-facebook');
 const TwitterStrategy = require('passport-twitter').Strategy;
 const Users = mongoose.model('Users');
+const KEYS = require('./constant');
 
 // Passport Local Strategy
 passport.use(new LocalStrategy({
@@ -23,9 +24,9 @@ passport.use(new LocalStrategy({
 
 // Passport Google Strategy
 passport.use(new GoogleStrategy({
-            clientID: '390361488631-behji6oe457e84gk2rgjg7556l11ju0j.apps.googleusercontent.com',
-            clientSecret: 'jUuHWlAZOSQphi1zv8AXIjPi',
-            callbackURL: 'http://localhost:8000/api/auth/google/callback'
+            clientID: KEYS.SOCIAL_KEYS.GOOGLE.CLIENT_ID,
+            clientSecret: KEYS.SOCIAL_KEYS.GOOGLE.CLIENT_SECRET,
+            callbackURL: KEYS.SOCIAL_KEYS.GOOGLE.CALLBACK
         }, async (accessToken, refereshToken, profile, done) => {
 
         // find current user in UserModel
@@ -50,9 +51,9 @@ passport.use(new GoogleStrategy({
 
 // Passport Facebook Strategy
 passport.use(new FacebookStrategy({
-            clientID: '2248341318764911',
-            clientSecret: '927e379cd2208d49286f8c1ece6b5e40',
-            callbackURL: 'http://localhost:8000/api/auth/facebook/callback'
+            clientID: KEYS.SOCIAL_KEYS.FACEBOOK.CLIENT_ID,
+            clientSecret: KEYS.SOCIAL_KEYS.FACEBOOK.CLIENT_SECRET,
+            callbackURL: KEYS.SOCIAL_KEYS.FACEBOOK.CALLBACK
         }, async (accessToken, refereshToken, profile, done) => {
 
         // find current user in UserModel
@@ -77,9 +78,9 @@ passport.use(new FacebookStrategy({
 
 // Passport Twitter Strategy
 passport.use(new TwitterStrategy({
-    consumerKey: 'NCaK7wXfy5H89Yf0FFqnUMC3T',
-    consumerSecret: 'HyKLU2xlPRaAcUyWx6ChYbAWpaqJmWGvKN9W476nwP02OE86qj',
-    callbackURL: '/api/auth/twitter/callback',
+    consumerKey: KEYS.SOCIAL_KEYS.TWITTER.CLIENT_ID,
+    consumerSecret: KEYS.SOCIAL_KEYS.TWITTER.CLIENT_SECRET,
+    callbackURL: KEYS.SOCIAL_KEYS.TWITTER.CALLBACK,
     userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
     includeEmail: true
 }, async (accessToken, refereshToken, profile, done) => {
