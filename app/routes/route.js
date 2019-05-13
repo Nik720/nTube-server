@@ -28,6 +28,7 @@ router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);
 router.delete('/user/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
 router.put('/user/:userId', [auth.required, auth.isAdminAuthorised], users.update);
+router.get('/activeUser', [auth.required], users.getActiveUser);
 
 
 // Create a new Role

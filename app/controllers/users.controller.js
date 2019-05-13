@@ -149,6 +149,12 @@ exports.findOne = (req, res) => {
     });
 };
 
+/**
+* Which is used to update user data.
+* @param {object} req
+* @param {object} res
+* @return {object} - Response object.
+*/
 exports.update = (req, res) => {
 
     const user = req.body.user;
@@ -192,7 +198,7 @@ exports.update = (req, res) => {
     });
 };
 
-//DELETE current route (required, only authenticated users have access)
+//DELETE User
 exports.delete = (req, res) => {
   Users.findByIdAndRemove(req.params.userId)
     .then(user => {
@@ -213,3 +219,8 @@ exports.delete = (req, res) => {
         });
     });
 };
+
+exports.getActiveUser = (req, res) => {
+    const user = Users().returnActiveUser(req);
+    res.json(user);
+}

@@ -37,6 +37,7 @@ UsersSchema.methods.generateJWT = function() {
     email: this.email,
     id: this._id,
     role: this.role,
+    username: this.username,
     exp: parseInt(expirationDate.getTime() / 1000, 10),
   }, constant.SECRET);
 }
@@ -62,6 +63,15 @@ UsersSchema.methods.findUserIdByAuthorization = (req) => {
     let token = authorization.split(' ')[1];
     var decoded = jwt.verify(token, constant.SECRET);
     return (decoded) ? decoded.id : false;
+  }
+};
+
+UsersSchema.methods.returnActiveUser = (req) => {
+  const { headers: { authorization } } = req;
+  if(authorization && authorization.split(' ')[0] === 'Token') {
+    let token = authorization.split(' ')[1];
+    var decoded = jwt.verify(token, constant.SECRET);
+    return (decoded) ? decoded : false;
   }
 };
 
