@@ -2,10 +2,10 @@ var Seeder = require('mongoose-data-seed').Seeder;
 var Model = require('../app/models/Users');
 
 let newUser = {
-  username : 'admin2',
-  email: 'admin2@admin.com',
+  username : 'admin',
+  email: 'admin@admin.com',
   password: '123',
-  role: 'admin'
+  role: 'Admin'
 }
 
 const finalUser = new Model(newUser);

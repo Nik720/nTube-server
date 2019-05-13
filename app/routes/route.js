@@ -26,7 +26,7 @@ router.get('/auth/twitter/callback', users.twitterSignInCallback);
 // Users routes
 router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);
-router.delete('/user/delete/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
+router.delete('/user/:userId', [auth.required, auth.isAdminAuthorised], users.delete);
 router.put('/user/:userId', [auth.required, auth.isAdminAuthorised], users.update);
 
 
