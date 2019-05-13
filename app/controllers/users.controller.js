@@ -147,14 +147,6 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
 
     const user = req.body.user;
-	  // Validate Request
-    if(!user.email) {
-      return res.status(422).send({
-        errors: {
-          email: 'is required',
-        },
-      });
-    }
 
     if(!user.role) {
       return res.status(422).send({
@@ -174,8 +166,8 @@ exports.update = (req, res) => {
       Users.setPassword(user.password);
     }
 
-    // Find role and update it with the request body
-    Users.findByIdAndUpdate(req.params.userId, { newUser }, {new: true})
+    // Find user and update it with the request body
+    Users.findByIdAndUpdate(req.params.userId, newUser)
     .then(user => {
         if(!user) {
             return res.status(404).send({
