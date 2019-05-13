@@ -122,7 +122,12 @@ exports.findAll = (req, res) => {
     });
 };
 
-//GET current route (required, only authenticated users have access)
+/**
+* Which is used to find user by id.
+* @param {object} req
+* @param {object} res
+* @return {object} - Response object.
+*/
 exports.findOne = (req, res) => {
   Users.findById(req.params.userId)
     .then(user => {
