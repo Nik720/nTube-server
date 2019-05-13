@@ -56,4 +56,13 @@ UsersSchema.methods.validateUniqeEmail = async (value) => {
   return (emailCount == 0) ? false : true;
 };
 
+UsersSchema.methods.findUserIdByAuthorization = (req) => {
+  const { headers: { authorization } } = req;
+  if(authorization && authorization.split(' ')[0] === 'Token') {
+    let token = authorization.split(' ')[1];
+    var decoded = jwt.verify(token, constant.SECRET);
+    return (decoded) ? decoded.id : false;
+  }
+};
+
 module.exports = mongoose.model('Users', UsersSchema);

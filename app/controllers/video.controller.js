@@ -1,13 +1,13 @@
 
-const fs = require('fs');
-const Video = require('../models/videos.model.js');
+import fs from 'fs'
+import Video from '../models/videos.model.js'
+import Users from '../models/Users'
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
-const ffmpeg = require('fluent-ffmpeg');
+import ffmpeg from 'fluent-ffmpeg'
 ffmpeg.setFfmpegPath(ffmpegPath);
-const path = require('path');
 
 // Create and Save a new Video
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
 
     // create thumbnail from video
     ffmpeg(`${req.file.path}`)
@@ -28,12 +28,15 @@ exports.create = (req, res) => {
         size: '250x150'
     });
 
+    let userid = await Users().findUserIdByAuthorization(req);
+
     // Create a Video object
     const videoData = new Video({
         title: req.body.title,
         description: req.body.description,
         thumbnail: `${req.file.filename}-thumbnail.png`,
-        video: req.file.filename
+        video: req.file.filename,
+        postedBy: userid
     });
 
     // Save Video in the database
@@ -49,7 +52,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all roles from the database.
 exports.findAll = (req, res) => {
-	Video.find().sort({createdAt: 'desc'})
+	Video.find().sort({createdAt: 'desc'}).populate({ path: 'postedBy', select: 'username' })
     .then(data => {
         res.send(data);
     }).catch(err => {
