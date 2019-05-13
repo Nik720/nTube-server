@@ -1,29 +1,30 @@
-const express = require('express');
-const passport = require('passport');
+import express from 'express'
+import passport from 'passport'
 const router = express.Router();
-const auth = require('./auth');
-let upload = require('../../config/multer.config');
-let validator = require('../../middleware/validator');
+import auth from './auth'
 
-const users = require('../controllers/users.controller');
-const roles = require('../controllers/role.controller');
-const videos = require('../controllers/video.controller');
-const reports = require('../controllers/reports.controller');
+import upload from '../../config/multer.config'
+import validator from '../../middleware/validator'
+import authCtrl from '../controllers/auth.controller'
+import users from '../controllers/users.controller'
+import roles from '../controllers/role.controller'
+import videos from '../controllers/video.controller'
+import reports from '../controllers/reports.controller'
 
 // Auth routes
-router.post('/login', auth.optional, users.login);
-router.post('/user/register', validator.userRegistrationValidator, auth.optional, users.create);
+router.post('/login', auth.optional, authCtrl.login);
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/auth/google/callback', users.googleSignInCallback);
+router.get('/auth/google/callback', authCtrl.googleSignInCallback);
 
 router.get('/auth/facebook', passport.authenticate('facebook'));
-router.get('/auth/facebook/callback', users.facebookSignInCallback);
+router.get('/auth/facebook/callback', authCtrl.facebookSignInCallback);
 
 router.get('/auth/twitter', passport.authenticate('twitter'));
-router.get('/auth/twitter/callback', users.twitterSignInCallback);
+router.get('/auth/twitter/callback', authCtrl.twitterSignInCallback);
 
 // Users routes
+router.post('/user/register', validator.userRegistrationValidator, auth.optional, users.create);
 router.get('/users', [auth.required, auth.isAdminAuthorised], users.findAll);
 router.get('/user/:userId', [auth.required, auth.isAdminAuthorised], users.findOne);
 router.delete('/user/:userId', [auth.required, auth.isAdminAuthorised], users.delete);

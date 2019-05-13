@@ -1,4 +1,4 @@
-const Role = require('../models/role.model.js');
+import Role from '../models/role.model.js'
 
 // Create and Save a new Role
 exports.create = (req, res) => {
@@ -44,14 +44,14 @@ exports.findOne = (req, res) => {
         if(!role) {
             return res.status(404).send({
                 message: "Role not found with id " + req.params.roleId
-            });            
+            });
         }
         res.send(role);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "Role not found with id " + req.params.roleId
-            });                
+            });
         }
         return res.status(500).send({
             message: "Error retrieving role with id " + req.params.roleId
@@ -83,7 +83,7 @@ exports.update = (req, res) => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "Role not found with id " + req.params.roleId
-            });                
+            });
         }
         return res.status(500).send({
             message: "Error updating role with id " + req.params.roleId
@@ -105,7 +105,7 @@ exports.delete = (req, res) => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
                 message: "Role not found with id " + req.params.roleId
-            });                
+            });
         }
         return res.status(500).send({
             message: "Could not delete role with id " + req.params.roleId

@@ -1,6 +1,6 @@
-const jwt = require('express-jwt');
-const jwtWeb = require('jsonwebtoken');
-const constant = require('../../config/constant');
+import jwt from 'express-jwt'
+import jwtWeb from 'jsonwebtoken'
+import constant from '../../config/constant'
 
 const getTokenFromHeaders = (req,res) => {
   const { headers: { authorization } } = req;

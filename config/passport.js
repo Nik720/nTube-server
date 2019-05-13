@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const GoogleStrategy = require('passport-google-oauth20');
-const FacebookStrategy = require('passport-facebook');
+import mongoose from 'mongoose'
+import passport from 'passport'
+import LocalStrategy from 'passport-local'
+import GoogleStrategy from 'passport-google-oauth20'
+import FacebookStrategy from 'passport-facebook'
 const TwitterStrategy = require('passport-twitter').Strategy;
+import KEYS from './constant'
 const Users = mongoose.model('Users');
-const KEYS = require('./constant');
 
 // Passport Local Strategy
 passport.use(new LocalStrategy({
