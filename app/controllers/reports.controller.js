@@ -50,18 +50,12 @@ const self = {
             datasets : [
                 {
                     label: 'Last Week',
-                    fillColor : 'rgba(220,220,220,0.5)',
-                    strokeColor : 'rgba(220,220,220,1)',
-                    pointColor : 'rgba(220,220,220,1)',
-                    pointStrokeColor : '#fff',
+                    backgroundColor: 'rgba(220,220,220,0.5)',
                     data : data2
                 },
                 {
                     label: 'This Week',
-                    fillColor : 'rgba(151,187,205,0.5)',
-                    strokeColor : 'rgba(151,187,205,1)',
-                    pointColor : 'rgba(151,187,205,1)',
-                    pointStrokeColor : '#fff',
+                    backgroundColor : 'rgba(151,187,205,0.5)',
                     data : data1
                 }
             ]
