@@ -39,7 +39,9 @@ router.delete('/roles/:roleId', [auth.required, auth.isAdminAuthorised], roles.d
 
 // videos routes
 router.post('/video/upload', upload.single('file'), validator.validateVideo, auth.required, videos.create);
-router.get('/videoPlayback/:videoId', auth.optional, videos.findOne);
+router.get('/video/:videoId', auth.required, videos.findOne);
+router.put('/video/:videoId', auth.required, videos.update);
+router.get('/videoPlayback/:videoId', auth.optional, videos.videoPlayback);
 router.get('/videos', auth.required, videos.findAll);
 router.delete('/video/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
 

@@ -62,8 +62,8 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single video with a videoId
-exports.findOne = (req, res) => {
+// Find a single video and stream
+exports.videoPlayback = (req, res) => {
 	Video.findById(req.params.videoId)
     .then(data => {
         if(!data) {
@@ -112,6 +112,59 @@ exports.findOne = (req, res) => {
         }
         return res.status(500).send({
             message: "Error retrieving Video with id " + req.params.videoId
+        });
+    });
+};
+
+// Retrive video by ID
+exports.findOne = (req, res) => {
+    Video.findById(req.params.videoId)
+    .then(videoData => {
+        if(!videoData) {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        res.send(videoData);
+    }).catch(err => {
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        return res.status(500).send({
+            message: "Error retrieving user with id " + req.params.videoId
+        });
+    });
+};
+
+// Update Video
+exports.update = async (req, res) => {
+
+    // Create a Video object
+    const videoData = {
+        title: req.body.title,
+        description: req.body.description
+    };
+
+    // Save Video in the database
+    Video.findByIdAndUpdate(req.params.videoId, videoData)
+    .then(data => {
+        if(!data) {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        res.send(data);
+    }).catch(err => {
+        console.log(err);
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Video not found with id " + req.params.videoId
+            });
+        }
+        return res.status(500).send({
+            message: "Error updating video with id " + req.params.videoId
         });
     });
 };
