@@ -1,7 +1,7 @@
 var mongooseLib = require('mongoose');
 const dbConfig = require('./config/database.config');
 var Users = require("./seeders/users.seeder");
-var Roles = require("./seeders/users.seeder");
+var Roles = require("./seeders/roles.seeder");
 
 mongooseLib.Promise = global.Promise || Promise;
 
