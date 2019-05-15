@@ -49,7 +49,7 @@ mongoose.connect(dbConfig.url, {
     console.log('Could not connect to the database. Exiting now...', err);
     process.exit();
 });
-mongoose.set('debug', true);
+mongoose.set('debug', false);
 
 //routes
 const routes = require('./app/routes/route.js');
