@@ -45,6 +45,7 @@ router.get('/video/:videoId', auth.required, videos.findOne);
 router.put('/video/:videoId', auth.required, videos.update);
 router.get('/videoPlayback/:videoId', auth.optional, videos.videoPlayback);
 router.get('/videos', auth.required, videos.findAll);
+router.get('/videos/search', auth.required, videos.searchVideo);
 router.delete('/video/:videoId', [auth.required, auth.isAdminAuthorised], videos.delete);
 
 // reportsr

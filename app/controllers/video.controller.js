@@ -138,6 +138,18 @@ exports.findOne = (req, res) => {
     });
 };
 
+// Search videos
+exports.searchVideo = (req, res) => {
+    Video.find({title: new RegExp(req.query.q, 'i')}).select({'description': 0, 'thumbnail': 0, 'video':0, 'createdAt': 0, 'updatedAt': 0})
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving roles."
+        });
+    });
+}
+
 // Update Video
 exports.update = async (req, res) => {
 

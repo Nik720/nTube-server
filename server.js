@@ -9,7 +9,6 @@ import constant from './config/constant'
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-
 // Configuring the database
 import dbConfig from './config/database.config.js'
 import mongoose from 'mongoose'

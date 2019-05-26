@@ -27,7 +27,7 @@ const self = {
         const thisWeekResults = await google.analytics('v3').data.ga.get({
             'auth': jwt,
             'ids': 'ga:' + view_id,
-            'dimensions': 'ga:date,ga:nthDay',
+            'dimensions': 'ga:date',
             'metrics': 'ga:sessions',
             'start-date': moment().subtract(1, 'day').day(0).format('YYYY-MM-DD'),
             'end-date': moment().format('YYYY-MM-DD')
@@ -36,14 +36,14 @@ const self = {
         const lastWeekResults = await google.analytics('v3').data.ga.get({
             'auth': jwt,
             'ids': 'ga:' + view_id,
-            'dimensions': 'ga:date,ga:nthDay',
+            'dimensions': 'ga:date',
             'metrics': 'ga:sessions',
             'start-date': moment().subtract(1, 'day').day(0).subtract(1, 'week').format('YYYY-MM-DD'),
             'end-date': moment().subtract(1, 'day').day(6).subtract(1, 'week').format('YYYY-MM-DD')
         })
 
-        var data1 = thisWeekResults.data.rows.map(function(row) { return +row[2]; });
-        var data2 = lastWeekResults.data.rows.map(function(row) { return +row[2]; });
+        var data1 = thisWeekResults.data.rows.map(function(row) { return +row[1]; });
+        var data2 = lastWeekResults.data.rows.map(function(row) { return +row[1]; });
         var labels = thisWeekResults.data.rows.map(function(row) { return +row[0]; });
 
         labels = labels.map(function(label) {
@@ -73,13 +73,13 @@ const self = {
         const results = await google.analytics('v3').data.ga.get({
             'auth': jwt,
             'ids': 'ga:' + view_id,
-            'dimensions': 'ga:date,ga:nthDay',
             'metrics': 'ga:pageviews',
-            'start-date': moment().subtract(1, 'day').day(0).format('YYYY-MM-DD'),
-            'end-date': moment().format('YYYY-MM-DD')
+            'start-date': '6daysAgo',
+            'end-date': 'today',
+            'dimensions': 'ga:date'
         })
 
-        var data1 = results.data.rows.map(function(row) { return +row[2]; });
+        var data1 = results.data.rows.map(function(row) { return +row[1]; });
         var labels = results.data.rows.map(function(row) { return +row[0]; });
 
         labels = labels.map(function(label) {
