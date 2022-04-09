@@ -29,7 +29,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^39.2.0",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.5.5",
     "mongoose-data-seed": "^1.0.7",
     "mongoose-url-slugs": "^1.0.2",
